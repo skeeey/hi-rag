@@ -8,8 +8,9 @@ https://github.com/ollama/ollama
 2. Open the Command Palette, start typing the `Terminal: Create New Terminal`, then run the `python -m pip install <package-name>` to install dependent packages
 
 ```sh
-python3 -m venv /path/to/new/virtual/environment
-source bin/activate
+python3.11 -m venv $HOME/.python11
+source $HOME/.python11/bin/activate
+cd hi-rag/backend
 pip install -r requirements.txt
 ```
 
