@@ -1,0 +1,25 @@
+# coding: utf-8
+
+import logging
+from llama_index.llms.groq import Groq
+from llama_index.llms.ollama import Ollama
+from llama_index.embeddings.huggingface import HuggingFaceEmbedding
+from llama_index.embeddings.ollama import OllamaEmbedding
+from common.settings import *
+
+def get_llm_model():
+    logging.info("mode %s is used with %s", LLM_MODEL_NAME, LLM_MODEL_PROVIDER)
+    if LLM_MODEL_PROVIDER == 'groq':
+        return Groq(model=LLM_MODEL_NAME)
+    elif LLM_MODEL_PROVIDER == 'ollama':
+        return Ollama(model=LLM_MODEL_NAME, request_timeout=600.0)
+
+def get_embedding_model():
+    logging.info("embedding mode %s is used with %s", EMBEDDING_MODEL_NAME, EMBEDDING_MODEL_PROVIDER)
+    if EMBEDDING_MODEL_PROVIDER == 'huggingface':
+        return HuggingFaceEmbedding(model_name=EMBEDDING_MODEL_NAME)
+    elif EMBEDDING_MODEL_PROVIDER == 'ollama':
+        return OllamaEmbedding(model_name=EMBEDDING_MODEL_NAME)
+
+def get_models():
+    return get_llm_model(), get_embedding_model()
