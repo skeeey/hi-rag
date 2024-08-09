@@ -1,8 +1,2 @@
 .venv
-.env
-
-*.log
-*.ckpt
-*.pyc
-*.gz
-*.pkl
+node_modules

@@ -1,36 +1,14 @@
 # coding: utf-8
 
-import os, cmd, getopt, sys
+import os, cmd, logging
 
 from llama_index.core import Settings
-from llama_index.llms.ollama import Ollama
-from llama_index.embeddings.ollama import OllamaEmbedding
 
+import settings
+from llms.models import get_models
 from chat.engine import ChatEngine
 
-def get_args(argv):
-    model="llama3.1"
-    index_dir=os.path.join(os.getcwd(), "data", "example", "index")
-
-    try:
-        opts, _ = getopt.getopt(argv, "hm:i:",["model=","index-dir="])
-    except getopt.GetoptError:
-        print("llm_chat.py -m <ollama model> -i <data dir>")
-        sys.exit(1)
-    
-    if len(opts) == 0:
-        return model, index_dir
-
-    for opt, arg in opts:
-        if opt == '-h':
-            print("llm_chat.py -m <ollama model> -i <data dir>")
-            sys.exit()
-        elif opt in ("-m", "--model"):
-            model = arg
-        elif opt in ("-o", "--index-dir"):
-            index_dir = arg
-    return model, index_dir
-
+logging.basicConfig(level=logging.INFO)
 
 class LLMChat(cmd.Cmd):
     intro = 'Welcome to the chat shell.   Type help or ? to list commands.\n'
@@ -50,12 +28,7 @@ class LLMChat(cmd.Cmd):
         raise SystemExit
 
 if __name__ == '__main__':
-    model, index_dir=get_args(sys.argv[1:])
-    print("model: %s, index: %s" % (model, index_dir))
-
-    embed_model = OllamaEmbedding(model)
-    llm = Ollama(model=model, request_timeout=600.0)
+    llm, embed_model = get_models()
     Settings.llm = llm
     Settings.embed_model = embed_model
-    
-    LLMChat(ChatEngine(index_dir, llm)).cmdloop()
+    LLMChat(ChatEngine(os.getenv(settings.INDEX_DIR), llm)).cmdloop()

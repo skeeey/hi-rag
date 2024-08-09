@@ -1,9 +1,11 @@
 .venv
 .env
+
 __pycache__
+
+_output
 
 *.log
 *.ckpt
 *.pyc
-*.gz
 *.pkl

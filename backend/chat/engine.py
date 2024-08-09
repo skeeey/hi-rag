@@ -27,9 +27,3 @@ class ChatEngine:
     def chat(self, question):
        response = self.chatEngine.chat(question)
        return response
-    
-    def streamChat(self, question):
-      streaming_resp = self.chatEngine.stream_chat(question)
-      for token in streaming_resp.response_gen:
-          print(token, end="")
-      return ""

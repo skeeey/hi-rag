@@ -1,13 +1,14 @@
 # coding: utf-8
 
-import os
-import logging
+import os, logging
 from llama_index.core import Settings
-from llama_index.llms.ollama import Ollama
-from llama_index.embeddings.ollama import OllamaEmbedding
+
 from fastapi import FastAPI, HTTPException
 from fastapi.middleware.cors import CORSMiddleware
 from pydantic import BaseModel
+
+import settings
+from llms.models import get_models
 from chat.engine import ChatEngine
 
 logging.basicConfig(level=logging.INFO)
@@ -17,9 +18,8 @@ class Message(BaseModel):
     content: str
 
 # Create a chat engine
-index_dir=os.path.join(os.getcwd(), "backend", "data", "index")
-embed_model = OllamaEmbedding("llama3:8b")
-llm = Ollama(model="llama3:8b", request_timeout=600.0)
+index_dir=os.getenv(settings.INDEX_DIR, default=settings.DEFAULT_INDEX_DIR)
+llm, embed_model = get_models()
 Settings.llm = llm
 Settings.embed_model = embed_model
 
@@ -39,12 +39,14 @@ app.add_middleware(
     allow_headers=["*"],
 )
 
+@app.post("/")
+async def root():
+    return 
 
 @app.post("/chat")
 async def chat(msg: Message):
     if len(msg.content) == 0:
         return HTTPException(status_code=422, detail="the msg content is required")
-    
     try:
         chatResponse=chatEngine.chat(msg.content.strip())
         logging.debug("answer question[%s] %s", msg.id, chatResponse.response)
