@@ -13,6 +13,8 @@ LOG_FORMAT = "%(levelname)s: [%(asctime)s, %(module)s, line:%(lineno)d] %(messag
 LLM_MODEL_PROVIDER = os.getenv("LLM_MODEL_PROVIDER", default="ollama")
 LLM_MODEL_NAME = os.getenv("LLM_MODEL_NAME", default="llama3.1")
 
+GROQ_TOKEN = os.getenv("GROQ_TOKEN")
+
 # embedding model settings
 EMBEDDING_MODEL_PROVIDER = os.getenv("EMBEDDING_MODEL_PROVIDER", default="huggingface")
 EMBEDDING_MODEL_NAME = os.getenv("EMBEDDING_MODEL_NAME", default="BAAI/bge-small-en-v1.5")
