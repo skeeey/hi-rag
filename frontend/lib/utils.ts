@@ -10,7 +10,7 @@ export const sleep = (ms: number) =>
   new Promise(resolve => setTimeout(resolve, ms))
 
 export async function chat (msg: Message) {
-  const response = await fetch("http://localhost:8000/chat", {
+  const response = await fetch(process.env.NEXT_PUBLIC_API_URL + "/chat", {
     method: "POST",
     headers: {"Content-Type": "application/json", Accept: 'application/json'},
     body: JSON.stringify(msg),
@@ -22,8 +22,6 @@ export async function chat (msg: Message) {
   }
 
   const result = await response.json() as Message
-  console.log('result is: ', result);
-
   return result 
 }
 

@@ -1,8 +1,7 @@
 # coding: utf-8
 
-import os, logging
+import logging
 from llama_index.core import Settings
-from dotenv import load_dotenv
 from fastapi import FastAPI, HTTPException
 from fastapi.middleware.cors import CORSMiddleware
 from pydantic import BaseModel
@@ -10,21 +9,19 @@ from llms.models import get_models
 from chat.engine import ChatEngine
 from common.settings import *
 
-load_dotenv()
-
-logging.basicConfig(level=logging.INFO)
+# setting logger
+logging.basicConfig(level=logging.INFO, format=LOG_FORMAT, datefmt=LOG_DATE_FORMAT)
+logger = logging.getLogger(__name__)
 
 class Message(BaseModel):
     id: str
     content: str
 
 # Create a chat engine
-index_dir=os.getenv(INDEX_DIR)
 llm, embed_model = get_models()
 Settings.llm = llm
 Settings.embed_model = embed_model
-
-chatEngine=ChatEngine(index_dir, llm, verbose=False)
+chatEngine=ChatEngine(INDEX_DIR, llm, verbose=False)
 
 # Create a http server
 origins = [
@@ -40,9 +37,9 @@ app.add_middleware(
     allow_headers=["*"],
 )
 
-@app.post("/")
+@app.get("/")
 async def root():
-    return 
+    return {"message": "Hi, RAG"}
 
 @app.post("/chat")
 async def chat(msg: Message):
@@ -50,8 +47,7 @@ async def chat(msg: Message):
         return HTTPException(status_code=422, detail="the msg content is required")
     try:
         chatResponse=chatEngine.chat(msg.content.strip())
-        logging.debug("answer question[%s] %s", msg.id, chatResponse.response)
         return Message(id=msg.id, content=chatResponse.response)
     except Exception as e:
-        logging.error('Error at chat', exc_info=e)
+        logger.error('Error at chat', exc_info=e)
         return HTTPException(status_code=500, detail="failed to answer the question")
