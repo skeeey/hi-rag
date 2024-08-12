@@ -10,8 +10,7 @@ LOG_DATE_FORMAT = "%Y-%m-%d %H:%M:%S"
 LOG_FORMAT = "%(levelname)s: [%(asctime)s, %(module)s, line:%(lineno)d] %(message)s"
 
 # model settings
-LLM_MODEL_PROVIDER = os.getenv("LLM_MODEL_PROVIDER", default="ollama")
-LLM_MODEL_NAME = os.getenv("LLM_MODEL_NAME", default="llama3.1")
+LLM_MODEL = os.getenv("LLM_MODEL", default="llama3.1")
 
 GROQ_TOKEN = os.getenv("GROQ_TOKEN")
 

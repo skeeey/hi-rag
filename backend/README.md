@@ -1,38 +1,55 @@
 # Backend
 
-## Build Index
+Using [LLamaIndex](https://docs.llamaindex.ai/en/stable/) framework
+
+## Prepare
+
+1. (Optional but recommended) Create a virtual environment
 
 ```sh
-INDEX_DIR=/home/cloud-user/rag-index/huggingface LOCAL_DATA_DIR=/home/cloud-user/hi-rag/backend/example/data/doc  make build-index
+VENV=<your python virtual environment dir>
+
+# test with python >= 3.9.19
+python -m venv $VENV
+source $VENV/bin/activate
 ```
 
-## Run a chat bot locally
+2. Install dependents
 
-https://github.com/ollama/ollama
+```sh
+make build-deps
+```
 
-40.8 GiB
+## Build Index
 
-time used 1390.281s
-time used 4.898s
+Currently, the pdf and markdown is supported
 
+```sh
+INDEX_DIR=<your-index-out-dir> LOCAL_DATA_DIR=<your-local-data-dir>  make build-index
+```
+
+## Run a chat bot
+
+```sh
+# using Groq
+INDEX_DIR=<your-index-dir> LLM_MODEL=<llm-model-name> GROQ_TOKEN=<your-groq-token> make chat
+
+
+# using Ollama
+INDEX_DIR=<your-index-dir> LLM_MODEL=<llm-model-name> make chat
+```
 
 ## Test Questions
 
 - My Red Hat Advanced Cluster Management managed cluster status is offline in the Red Hat Advanced Cluster Management hub, how can I fix this?
 - My cluster status is offline in the ACM hub, how can I fix it?
-- There is an error 'Secret in version "v1" cannot be ...' when I importing a cluster to the Red Hat Advanced Cluster Management hub, how can I fix it?
+- There is an error 'Secret in version "v1" cannot be ...' when I importing a cluster into the ACM hub, how can I fix it?
+- Will the CVE-2024-24786 have an impact on ACM?
+- My ACM managed clusters created cannot reconnect to an AODP, how can I fix it?
 
 ## Build Development Environment
 
-1. Open the Command Palette, start typing the `Python: Create Environment`, then select `Venv`
-2. Open the Command Palette, start typing the `Terminal: Create New Terminal`, then run the `python -m pip install <package-name>` to install dependent packages
-
-```sh
-python -m venv $HOME/.hi-rag
-source $HOME/.hi-rag/bin/activate
-cd hi-rag/backend
-make build-deps
-```
+Refer to [Getting Started with Python in VS Code](https://code.visualstudio.com/docs/python/python-tutorial) to import the code in the VS Code
 
 ### TODO
 - Support deploying with Containers

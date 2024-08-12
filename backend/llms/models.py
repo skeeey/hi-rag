@@ -10,15 +10,12 @@ from common.settings import *
 logger = logging.getLogger(__name__)
 
 def get_llm_model():
-    logger.info("mode %s is used with %s", LLM_MODEL_NAME, LLM_MODEL_PROVIDER)
-
-    if LLM_MODEL_PROVIDER == 'groq':
-        if GROQ_TOKEN == None:
-            raise ValueError("`GROQ_TOKEN` is required")
-        
-        return Groq(model=LLM_MODEL_NAME, api_key=GROQ_TOKEN)
-    elif LLM_MODEL_PROVIDER == 'ollama':
-        return Ollama(model=LLM_MODEL_NAME, request_timeout=600.0)
+    if GROQ_TOKEN and len(GROQ_TOKEN) != 0:
+        logger.info("mode %s is used with groq", LLM_MODEL)
+        return Groq(model=LLM_MODEL, api_key=GROQ_TOKEN)
+    else:
+        logger.info("mode %s is used with ollama", LLM_MODEL)
+        return Ollama(model=LLM_MODEL, request_timeout=600.0)
 
 def get_embedding_model():
     logger.info("embedding mode %s is used with %s", EMBEDDING_MODEL_NAME, EMBEDDING_MODEL_PROVIDER)
