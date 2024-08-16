@@ -4,7 +4,7 @@ import logging, time
 from llama_index.core import VectorStoreIndex, Settings
 from llama_index.core import SimpleDirectoryReader
 from llama_index.readers.file import PDFReader, MarkdownReader
-from llama_index.readers.jira import JiraReader
+from readers.jira import JiraReader
 from llms.models import get_embedding_model
 from common.settings import *
 

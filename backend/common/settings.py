@@ -36,9 +36,11 @@ Here are the relevant documents for the context:
 
 {context_str}
 
-Instruction: Based on the above documents, provide a detailed answer for the user question below.
-Answer "don't know" if not present in the document.
 Please Note:
 1. The "hub" for the given question always refers to the ACM Hub.
 2. The "cluster" or "managed cluster" for the given question always refers to the ACM managed cluster.
+
+Instruction: Based on the above documents, provide a detailed answer for the user question below.
+If you need more details about the question, ask user to provide.
+Answer "don't know" if not present in the document.
 """

@@ -54,7 +54,7 @@ INDEX_DIR=<your-index-dir> LLM_MODEL=<llm-model-name> make chat
 Refer to [Getting Started with Python in VS Code](https://code.visualstudio.com/docs/python/python-tutorial) to import the code in the VS Code
 
 ### TODO
-- Support ve
+- Support vector database as store
 - Support deploying with Containers
 - Support [SSE](https://sysid.github.io/server-sent-events/)
 - Building [agents](https://docs.llamaindex.ai/en/stable/understanding/agent/basic_agent/) to resolve a problem step by step 
