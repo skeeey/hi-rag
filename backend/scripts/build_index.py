@@ -5,7 +5,7 @@ from llama_index.core import VectorStoreIndex, Settings
 from llama_index.core import SimpleDirectoryReader
 from llama_index.readers.file import PDFReader, MarkdownReader
 from llama_index.readers.jira import JiraReader
-from llms.models import get_models
+from llms.models import get_embedding_model
 from common.settings import *
 
 logging.basicConfig(level=logging.INFO, format=LOG_FORMAT, datefmt=LOG_DATE_FORMAT)
@@ -45,8 +45,8 @@ if __name__ == '__main__':
         raise ValueError("'INDEX_DIR' is required")
 
     # Set model
-    llm, embed_model = get_models()
-    Settings.llm = llm
+    embed_model = get_embedding_model()
+    #Settings.llm = llm
     Settings.embed_model = embed_model
 
     # Load Data
@@ -57,7 +57,7 @@ if __name__ == '__main__':
     # Build index
     logger.info("build index ...")
     start_time = time.time()
-    index = VectorStoreIndex.from_documents(docs)
+    index = VectorStoreIndex.from_documents(docs, show_progress=True)
     # TODO support a database
     index.storage_context.persist(persist_dir=INDEX_DIR)
     logger.info("index is built, time used %.3fs", (time.time() - start_time))

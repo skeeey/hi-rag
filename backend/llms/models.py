@@ -3,6 +3,7 @@
 import logging
 from llama_index.llms.groq import Groq
 from llama_index.llms.ollama import Ollama
+from llama_index.llms.openai import OpenAI
 from llama_index.embeddings.huggingface import HuggingFaceEmbedding
 from llama_index.embeddings.ollama import OllamaEmbedding
 from common.settings import *
@@ -13,17 +14,16 @@ def get_llm_model():
     if GROQ_TOKEN and len(GROQ_TOKEN) != 0:
         logger.info("mode %s is used with groq", LLM_MODEL)
         return Groq(model=LLM_MODEL, api_key=GROQ_TOKEN)
+    elif OPENAI_API_KEY and len(OPENAI_API_KEY) != 0:
+        logger.info("mode %s is used with openai", LLM_MODEL)
+        return OpenAI(temperature=0, model=LLM_MODEL, api_key=OPENAI_API_KEY)
     else:
         logger.info("mode %s is used with ollama", LLM_MODEL)
         return Ollama(model=LLM_MODEL, request_timeout=600.0)
 
 def get_embedding_model():
-    logger.info("embedding mode %s is used with %s", EMBEDDING_MODEL_NAME, EMBEDDING_MODEL_PROVIDER)
-
-    if EMBEDDING_MODEL_PROVIDER == 'huggingface':
-        return HuggingFaceEmbedding(model_name=EMBEDDING_MODEL_NAME)
-    elif EMBEDDING_MODEL_PROVIDER == 'ollama':
-        return OllamaEmbedding(model_name=EMBEDDING_MODEL_NAME)
+    logger.info("embedding mode https://huggingface.co/BAAI/bge-small-en-v1.5")
+    return HuggingFaceEmbedding(model_name="BAAI/bge-small-en-v1.5")
 
 def get_models():
     return get_llm_model(), get_embedding_model()

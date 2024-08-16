@@ -11,7 +11,7 @@ class ChatEngine:
       # load index from local index dir
       index = load_index_from_storage(StorageContext.from_defaults(persist_dir=indexDir))
       self.chatEngine = CondensePlusContextChatEngine.from_defaults(
-        retriever=VectorIndexRetriever(index=index, similarity_top_k=10),
+        retriever=VectorIndexRetriever(index=index, similarity_top_k=3),
         memory=ChatMemoryBuffer.from_defaults(token_limit=40960),
         llm=llm,
         context_prompt=CONTEXT_PROMPT,

@@ -12,11 +12,8 @@ LOG_FORMAT = "%(levelname)s: [%(asctime)s, %(module)s, line:%(lineno)d] %(messag
 # model settings
 LLM_MODEL = os.getenv("LLM_MODEL", default="llama3.1")
 
+OPENAI_API_KEY = os.getenv("OPENAI_API_KEY")
 GROQ_TOKEN = os.getenv("GROQ_TOKEN")
-
-# embedding model settings
-EMBEDDING_MODEL_PROVIDER = os.getenv("EMBEDDING_MODEL_PROVIDER", default="huggingface")
-EMBEDDING_MODEL_NAME = os.getenv("EMBEDDING_MODEL_NAME", default="BAAI/bge-small-en-v1.5")
 
 # index settings
 INDEX_DIR = os.getenv("INDEX_DIR")
