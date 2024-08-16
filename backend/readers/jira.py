@@ -96,25 +96,20 @@ class JiraReader(BaseReader):
             if issue.fields.versions:
                 for version in issue.fields.versions:
                     affects_versions.append(version.name)
-            print(affects_versions)
 
             if issue.raw["fields"]["fixVersions"]:
                 for fixVersion in issue.raw["fields"]["fixVersions"]:
                     fix_versions.append(fixVersion["name"])
-            print(fix_versions)
 
             if issue.raw["fields"]["components"]:
                 for component in issue.raw["fields"]["components"]:
                     components.append(component["name"])
-            print(components)
 
             if issue.fields.assignee:
                 assignee = issue.fields.assignee.emailAddress
-                print(assignee)
             
             if issue.fields.reporter:
                 reporter = issue.fields.reporter.emailAddress
-                print(reporter)
             
             if issue.fields.comment.comments:
                 for comment in issue.fields.comment.comments:
@@ -126,7 +121,7 @@ class JiraReader(BaseReader):
                     text=f"{issue.fields.summary} \n {issue.fields.description} \n {all_comments}",
                     extra_info={
                         "key": issue.key,
-                        "title": issue.fields.summary,
+                        "summary": issue.fields.summary,
                         "url": issue.permalink(),
                         "created_at": issue.fields.created,
                         "updated_at": issue.fields.updated,
