@@ -5,7 +5,6 @@
 """
 Read the data from JIRA system
 """
-
 from typing import List, Optional, TypedDict
 
 from llama_index.core.readers.base import BaseReader
@@ -87,14 +86,12 @@ class JiraReader(BaseReader):
 
         issues = []
 
-        assignee = ""
-        # reporter = ""
-        affects_versions = []
-        fix_versions = []
-        components = []
-        comments = []
-        all_comments = ""
         for issue in relevant_issues:
+            affects_versions = []
+            fix_versions = []
+            components = []
+            all_comments = ""
+
             if issue.fields.versions:
                 for version in issue.fields.versions:
                     affects_versions.append(version.name)
@@ -107,37 +104,26 @@ class JiraReader(BaseReader):
                 for component in issue.raw["fields"]["components"]:
                     components.append(component["name"])
 
-            if issue.fields.assignee:
-                assignee = issue.fields.assignee.emailAddress
-
-            # if issue.fields.reporter:
-            #     reporter = issue.fields.reporter.emailAddress
-
             if issue.fields.comment.comments:
+                comments = []
                 for comment in issue.fields.comment.comments:
                     comments.append(comment.body)
                 all_comments = "\n".join(comments)
 
-            issues.append(
-                Document(
+            issues.append(Document(
                     text=f"{issue.fields.summary} \n {issue.fields.description} \n {all_comments}",
                     extra_info={
                         "id": issue.key,
-                        # "summary": issue.fields.summary,
-                        # "url": issue.permalink(),
-                        # "created_at": issue.fields.created,
-                        # "updated_at": issue.fields.updated,
                         "labels": issue.fields.labels,
+                        "components": components,
                         "status": issue.fields.status.name,
-                        "assignee": assignee,
-                        # "reporter": reporter,
-                        # "project": issue.fields.project.name,
-                        # "issue_type": issue.fields.issuetype.name,
-                        # "priority": issue.fields.priority.name,
+                        "assignee": issue.fields.assignee.emailAddress,
+                        "reporter": issue.fields.reporter.emailAddress,
+                        "project": issue.fields.project.name,
+                        "issue_type": issue.fields.issuetype.name,
                         "affects_versions": affects_versions,
                         "fix_versions": fix_versions,
                     },
-                )
-            )
+            ))
 
         return issues

@@ -7,7 +7,6 @@ Build the index with the given data and save the index to the local file system
 import logging
 import time
 from llama_index.core import VectorStoreIndex, Settings
-from llama_index.core.node_parser import SentenceSplitter
 from llms.models import get_embedding_model
 from loaders.all import load_all_data
 from config.settings import LOG_FORMAT, LOG_DATE_FORMAT, INDEX_DIR
@@ -32,7 +31,9 @@ if __name__ == "__main__":
     start_time = time.time()
     index = VectorStoreIndex.from_documents(
         docs,
-        transformations=[SentenceSplitter(chunk_size=512, chunk_overlap=10)],
+        # need more test, refer to
+        # https://www.llamaindex.ai/blog/evaluating-the-ideal-chunk-size-for-a-rag-system-using-llamaindex-6207e5d3fec5
+        # transformations=[SentenceSplitter(chunk_size=512, chunk_overlap=10)],
         show_progress=True,
     )
     index.storage_context.persist(persist_dir=INDEX_DIR)

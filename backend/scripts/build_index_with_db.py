@@ -8,7 +8,6 @@ import logging
 import time
 from sqlalchemy import make_url
 from llama_index.core import VectorStoreIndex, StorageContext, Settings
-from llama_index.core.node_parser import SentenceSplitter
 from llama_index.vector_stores.postgres import PGVectorStore
 from llms.models import get_embedding_model
 from loaders.all import load_all_data
@@ -63,7 +62,9 @@ if __name__ == "__main__":
     index = VectorStoreIndex.from_documents(
         docs,
         storage_context=StorageContext.from_defaults(vector_store=vector_store),
-        transformations=[SentenceSplitter(chunk_size=512, chunk_overlap=10)],
+        # need more test, refer to
+        # https://www.llamaindex.ai/blog/evaluating-the-ideal-chunk-size-for-a-rag-system-using-llamaindex-6207e5d3fec5
+        #transformations=[SentenceSplitter(chunk_size=1024, chunk_overlap=200)],
         show_progress=True,
         )
     logger.info("index is built, time used %.3fs", (time.time() - start_time))
