@@ -1,5 +1,9 @@
 # coding: utf-8
 
+"""
+Settings to run build-index/chat bot/chat server
+"""
+
 import os
 from dotenv import load_dotenv
 
@@ -8,6 +12,10 @@ load_dotenv()
 # log settings
 LOG_DATE_FORMAT = "%Y-%m-%d %H:%M:%S"
 LOG_FORMAT = "%(levelname)s: [%(asctime)s, %(module)s, line:%(lineno)d] %(message)s"
+
+# DB settings
+DATABASE_URL = os.getenv("DATABASE_URL")
+DATABASE_TABLE = os.getenv("DATABASE_TABLE", default="hi_rag")
 
 # model settings
 LLM_MODEL = os.getenv("LLM_MODEL", default="llama3.1")

@@ -1,5 +1,9 @@
 # coding: utf-8
 
+"""
+Run a chat sever with FastAPI
+"""
+
 import logging
 from llama_index.core import Settings
 from fastapi import FastAPI, HTTPException
@@ -7,7 +11,7 @@ from fastapi.middleware.cors import CORSMiddleware
 from pydantic import BaseModel
 from llms.models import get_models
 from chat.engine import ChatEngine
-from common.settings import *
+from config.settings import LOG_FORMAT, LOG_DATE_FORMAT, INDEX_DIR, DATABASE_URL, DATABASE_TABLE
 
 # setting logger
 logging.basicConfig(level=logging.INFO, format=LOG_FORMAT, datefmt=LOG_DATE_FORMAT)
@@ -21,7 +25,12 @@ class Message(BaseModel):
 llm, embed_model = get_models()
 Settings.llm = llm
 Settings.embed_model = embed_model
-chatEngine=ChatEngine(INDEX_DIR, llm, verbose=False)
+chat_engine = ChatEngine(
+    index_dir=INDEX_DIR,
+    database_url=DATABASE_URL,
+    database_table=DATABASE_TABLE,
+    llm=llm,
+    verbose=False)
 
 # Create a http server
 origins = [
@@ -46,8 +55,8 @@ async def chat(msg: Message):
     if len(msg.content) == 0:
         return HTTPException(status_code=422, detail="the msg content is required")
     try:
-        chatResponse=chatEngine.chat(msg.content.strip())
-        return Message(id=msg.id, content=chatResponse.response)
+        chat_response=chat_engine.chat(msg.content.strip())
+        return Message(id=msg.id, content=chat_response.response)
     except Exception as e:
-        logger.error('Error at chat', exc_info=e)
+        logger.error("Error at chat", exc_info=e)
         return HTTPException(status_code=500, detail="failed to answer the question")

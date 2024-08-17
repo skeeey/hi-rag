@@ -1,12 +1,15 @@
 # coding: utf-8
 
+"""
+Provide LLM models by different configurations
+"""
+
 import logging
 from llama_index.llms.groq import Groq
 from llama_index.llms.ollama import Ollama
 from llama_index.llms.openai import OpenAI
 from llama_index.embeddings.huggingface import HuggingFaceEmbedding
-from llama_index.embeddings.ollama import OllamaEmbedding
-from common.settings import *
+from config.settings import GROQ_TOKEN, OPENAI_API_KEY, LLM_MODEL
 
 logger = logging.getLogger(__name__)
 
@@ -22,7 +25,8 @@ def get_llm_model():
         return Ollama(model=LLM_MODEL, request_timeout=600.0)
 
 def get_embedding_model():
-    logger.info("embedding mode https://huggingface.co/BAAI/bge-small-en-v1.5")
+    # TODO support more embedding model
+    logger.info("embedding model: https://huggingface.co/BAAI/bge-small-en-v1.5")
     return HuggingFaceEmbedding(model_name="BAAI/bge-small-en-v1.5")
 
 def get_models():

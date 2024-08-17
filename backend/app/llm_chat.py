@@ -1,21 +1,30 @@
 # coding: utf-8
 
-import cmd, logging
+"""
+Run a chat bot locally
+"""
+
+import cmd
+import logging
 from llama_index.core import Settings
 from llms.models import get_models
 from chat.engine import ChatEngine
-from common.settings import *
+from config.settings import LOG_FORMAT, LOG_DATE_FORMAT, INDEX_DIR, DATABASE_URL, DATABASE_TABLE
 
-logging.basicConfig(level=logging.ERROR)
+logging.basicConfig(level=logging.INFO, format=LOG_FORMAT, datefmt=LOG_DATE_FORMAT)
 logger = logging.getLogger(__name__)
 
 class LLMChat(cmd.Cmd):
+    """
+    LLMChat (based on cmd) provides a line-oriented command interpreter
+    """
+
     intro = (
         "Welcome to the chat shell. \n"
         "Using `m <Your message>` to send a message. \n"
         "Type help or ? to list commands.\n"
     )
-    prompt = '(Chat🦙) '
+    prompt = "(Chat🦙) "
 
     def __init__(self, engine:ChatEngine):
         super().__init__()
@@ -23,15 +32,23 @@ class LLMChat(cmd.Cmd):
 
     def do_m(self, message):
         """Send a question to the current conversation and get back the AI's response: m <Your message>"""
-        print("\n\n%s"%self.engine.chat(message.strip()))
+        resp = self.engine.chat(message.strip())
+        print(f"\n\n{resp}")
 
-    def do_bye(self, args):
+    def do_bye(self, _):
         """Quits the chat."""
-        print('Bye')
+        print("Bye")
         raise SystemExit
 
-if __name__ == '__main__':
+if __name__ == "__main__":
     llm, embed_model = get_models()
     Settings.llm = llm
     Settings.embed_model = embed_model
-    LLMChat(ChatEngine(INDEX_DIR, llm, verbose=False)).cmdloop()
+    chat_engine = ChatEngine(
+        index_dir=INDEX_DIR,
+        database_url=DATABASE_URL,
+        database_table=DATABASE_TABLE,
+        llm=llm,
+        verbose=False,
+    )
+    LLMChat(chat_engine).cmdloop()
