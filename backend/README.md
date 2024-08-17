@@ -16,7 +16,7 @@ source $VENV/bin/activate
 2. Install dependents
 
 ```sh
-make build-deps
+make deps
 ```
 
 ## Build Index

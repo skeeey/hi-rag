@@ -88,7 +88,7 @@ class JiraReader(BaseReader):
         issues = []
 
         assignee = ""
-        reporter = ""
+        # reporter = ""
         affects_versions = []
         fix_versions = []
         components = []
@@ -110,8 +110,8 @@ class JiraReader(BaseReader):
             if issue.fields.assignee:
                 assignee = issue.fields.assignee.emailAddress
 
-            if issue.fields.reporter:
-                reporter = issue.fields.reporter.emailAddress
+            # if issue.fields.reporter:
+            #     reporter = issue.fields.reporter.emailAddress
 
             if issue.fields.comment.comments:
                 for comment in issue.fields.comment.comments:
@@ -122,18 +122,19 @@ class JiraReader(BaseReader):
                 Document(
                     text=f"{issue.fields.summary} \n {issue.fields.description} \n {all_comments}",
                     extra_info={
-                        "key": issue.key,
-                        "summary": issue.fields.summary,
-                        "url": issue.permalink(),
-                        "created_at": issue.fields.created,
-                        "updated_at": issue.fields.updated,
+                        "id": issue.key,
+                        # "summary": issue.fields.summary,
+                        # "url": issue.permalink(),
+                        # "created_at": issue.fields.created,
+                        # "updated_at": issue.fields.updated,
                         "labels": issue.fields.labels,
                         "status": issue.fields.status.name,
                         "assignee": assignee,
-                        "reporter": reporter,
-                        "project": issue.fields.project.name,
-                        "issue_type": issue.fields.issuetype.name,
-                        "priority": issue.fields.priority.name,
+                        # "reporter": reporter,
+                        # "project": issue.fields.project.name,
+                        # "issue_type": issue.fields.issuetype.name,
+                        # "priority": issue.fields.priority.name,
+                        "affects_versions": affects_versions,
                         "fix_versions": fix_versions,
                     },
                 )
