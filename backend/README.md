@@ -41,14 +41,6 @@ INDEX_DIR=<your-index-dir> LLM_MODEL=<llm-model-name> OPENAI_API_KEY=<your-groq-
 INDEX_DIR=<your-index-dir> LLM_MODEL=<llm-model-name> make chat
 ```
 
-## Test Questions
-
-- My Red Hat Advanced Cluster Management managed cluster status is offline in the Red Hat Advanced Cluster Management hub, how can I fix this?
-- My cluster status is offline in the ACM hub, how can I fix it?
-- There is an error 'Secret in version "v1" cannot be ...' when I importing a cluster into the ACM hub, how can I fix it?
-- Will the CVE-2024-24786 have an impact on ACM?
-- My ACM managed clusters created cannot reconnect to an AODP, how can I fix it?
-
 ## Build Development Environment
 
 Refer to [Getting Started with Python in VS Code](https://code.visualstudio.com/docs/python/python-tutorial) to import the code in the VS Code
