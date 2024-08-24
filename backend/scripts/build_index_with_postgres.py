@@ -1,7 +1,7 @@
 # coding: utf-8
 
 """
-Build the index with the given data and save the index to a given database
+Build the index with the given data and save the index to a given Postgres
 """
 
 import logging
@@ -11,13 +11,13 @@ from llama_index.core import VectorStoreIndex, StorageContext, Settings
 from llama_index.vector_stores.postgres import PGVectorStore
 from llms.models import get_embedding_model
 from loaders.all import load_all_data
-from config.settings import LOG_FORMAT, LOG_DATE_FORMAT, DATABASE_URL, DATABASE_TABLE
+from config.settings import LOG_FORMAT, LOG_DATE_FORMAT, POSTGRES_DATABASE_URL, POSTGRES_DATABASE_TABLE
 
 logging.basicConfig(level=logging.INFO, format=LOG_FORMAT, datefmt=LOG_DATE_FORMAT)
 logger = logging.getLogger(__name__)
 
 if __name__ == "__main__":
-    if DATABASE_URL is None:
+    if POSTGRES_DATABASE_URL is None:
         raise ValueError("'DATABASE_URL' is required")
 
     # Set embedding model
@@ -30,7 +30,7 @@ if __name__ == "__main__":
 
     # Build index
     start_time = time.time()
-    url = make_url(DATABASE_URL)
+    url = make_url(POSTGRES_DATABASE_URL)
     logger.info("build index to database %s ...", url.database)
 
     vector_store = PGVectorStore.from_params(
@@ -39,7 +39,7 @@ if __name__ == "__main__":
         password=url.password,
         port=url.port,
         user=url.username,
-        table_name=DATABASE_TABLE,
+        table_name=POSTGRES_DATABASE_TABLE,
         embed_dim=384,  # BAAI/bge-small-en-v1.5 dimension
         # HNSW (Hierarchical Navigable Small World)
         #  - hnsw_m: This parameter refers to the maximum number of bidirectional links created for

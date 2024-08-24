@@ -24,17 +24,25 @@ deps:
 	pip install -r requirements.txt
 
 .PHONY: lint
-lint: deps
+lint:
 	pylint **/*.py
 
 .PHONY: build-index
 build-index:
 	python -m scripts.build_index
 
-.PHONY: build-index-with-db
-build-index-with-db:
-	python -m scripts.build_index_with_db
+.PHONY: build-index-with-postgres
+build-index-with-postgres:
+	python -m scripts.build_index_with_postgres
+
+.PHONY: build-index-with-chroma
+build-index-with-chroma:
+	python -m scripts.build_index_with_chroma
 
 .PHONY: chat
 chat:
 	TOKENIZERS_PARALLELISM=false python -m app.llm_chat
+
+.PHONY: langgraph-agent
+langgraph-agent:
+	TOKENIZERS_PARALLELISM=false python -m agent.main

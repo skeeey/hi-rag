@@ -93,15 +93,7 @@
 
   Therefore, it is likely that the CVE-2024-24786 will not have an impact on ACM.
   ```
-- (Jira) My ACM managed clusters created cannot reconnect to an AODP, how can I fix it?
-  ```
-  According to the information provided, the CVE-2024-24786 is related to a vulnerability in the golang-protobuf library, specifically in the encoding/protojson and internal/encoding/json packages.
 
-  The vulnerability can cause an infinite loop when unmarshaling certain forms of invalid JSON.
+  - would you help me some instructions for troubleshooting a cluster is unknown or offline?
 
-  However, the impact of this CVE on ACM is not explicitly stated.
-
-  But, according to the conversation, the latest addon-manager is using google.golang.org/protobuf v1.34.1, which is not affected by this CVE.
-
-  Therefore, it is likely that the CVE-2024-24786 will not have an impact on ACM.
-  ```
+  - Please help me make a step-by-step plan for diagnosing unknown clusters

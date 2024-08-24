@@ -9,7 +9,14 @@ import logging
 from llama_index.core import Settings
 from llms.models import get_models
 from chat.engine import ChatEngine
-from config.settings import LOG_FORMAT, LOG_DATE_FORMAT, INDEX_DIR, DATABASE_URL, DATABASE_TABLE
+from config.settings import (
+    LOG_FORMAT,
+    LOG_DATE_FORMAT,
+    INDEX_DIR,
+    CHROMA_DIR,
+    POSTGRES_DATABASE_URL,
+    POSTGRES_DATABASE_TABLE
+    )
 
 logging.basicConfig(level=logging.INFO, format=LOG_FORMAT, datefmt=LOG_DATE_FORMAT)
 logger = logging.getLogger(__name__)
@@ -45,9 +52,10 @@ if __name__ == "__main__":
     Settings.llm = llm
     Settings.embed_model = embed_model
     chat_engine = ChatEngine(
-        index_dir=INDEX_DIR,
-        database_url=DATABASE_URL,
-        database_table=DATABASE_TABLE,
+        local_index_dir=INDEX_DIR,
+        chroma_dir=CHROMA_DIR,
+        postgres_url=POSTGRES_DATABASE_URL,
+        postgres_table=POSTGRES_DATABASE_TABLE,
         llm=llm,
         verbose=False,
     )
