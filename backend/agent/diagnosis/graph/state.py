@@ -1,14 +1,19 @@
 # coding: utf-8
 
-from typing import TypedDict, Annotated, List, Tuple
+from typing import TypedDict
 
-def get_counter(a, b):
-    print(a, b)
-    return a
-
-class PlanExecute(TypedDict):
+class StepExecute(TypedDict):
     issue: str
+    root_cause: str
     plan: str
-    executed_plans: str
-    number: int
-    end: bool
+    execution_history: str
+    termination: bool
+
+def new_status(issue="", root_cause="", plan="", execution_history="", termination=False):
+    return {
+        "issue": issue,
+        "plan": plan,
+        "root_cause": root_cause,
+        "execution_history": execution_history,
+        "termination": termination,
+    }

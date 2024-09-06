@@ -43,6 +43,6 @@ build-index-with-chroma:
 chat:
 	TOKENIZERS_PARALLELISM=false python -m app.llm_chat
 
-.PHONY: langgraph-agent
-langgraph-agent:
+.PHONY: diagnosis
+diagnosis:
 	TOKENIZERS_PARALLELISM=false python -m agent.main
